@@ -1,45 +1,37 @@
-import { useDispatch, useSelector } from "react-redux";
-// import {
-//   decrement,
-//   increment,
-//   incrementByAmount,
-//   decrementByAmount,
-// } from "./Slices/CounterSlice/counterSlice";
 import { useEffect } from "react";
-import { getUser } from "./Slices/UserSlice/usersSlice";
+import { useGetUserQuery } from "./Slices/UserSlice/usersSlice";
 import Form from "./components/Form";
 import User from "./components/User";
 import { UserContextProvider } from "./context/UserContext";
 
-function App() {
-  const { users, loading } = useSelector((state) => state.users);
-  const dispatch = useDispatch();
+const App = () => {
+  const { data: users, isLoading } = useGetUserQuery();
 
-  // const incrementOperation = () => {
-  //   dispatch(increment());
-  // };
-  // const decrementOpetation = () => {
-  //   if (count > 0) {
-  //     dispatch(decrement());
-  //   }
-  // };
-  // const incrementByAmountOpetation = (value) => {
-  //   dispatch(incrementByAmount(value));
-  // };
-  // const decrementByAmountOpetation = (value) => {
-  //   if (count > 5) {
-  //     dispatch(decrementByAmount(value));
-  //   }
-  // };
+  // 1)
+  // const {
+  //   data: users,
+  //   isLoading,
+  //   refetch,
+  // } = useGetUserQuery({
+  //   refetchOnMountOrArgChange: true,
+  // });
 
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     refetch();
+  //   }, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
+  // 2)
+  // const { data: users, isLoading } = useGetUserQuery(undefined, {
+  //   pollingInterval: 1000,
+  // });
 
   return (
-    <>
+    <div>
       <UserContextProvider>
-        {loading ? (
+        {isLoading ? (
           <h2>Loading....</h2>
         ) : (
           <>
@@ -50,8 +42,8 @@ function App() {
           </>
         )}
       </UserContextProvider>
-    </>
+    </div>
   );
-}
+};
 
 export default App;

@@ -1,19 +1,18 @@
 import { useState } from "react";
+import { createUser } from "../Slices/UserSlice/usersSlice";
+import { useDispatch } from "react-redux";
 import Modal from "./Modal";
 import { useUserContext } from "../context/UserContext";
 import Button from "./Button";
 import Input from "./Input";
-import { useCreateNewUserMutation } from "../Slices/UserSlice/usersSlice";
 
 const Form = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
-  const [createNewUser, { isLoading }] = useCreateNewUserMutation();
-
-  function handleSubmit(e) {
-    e.preventDefault();
+  function createNewUser() {
     if (!username || !email || !password) return null;
     const newUser = {
       id: crypto.randomUUID(),
@@ -21,16 +20,14 @@ const Form = () => {
       email,
       password,
     };
-
-    try {
-      createNewUser(newUser).unwrap();
-    } catch (error) {
-      console.log(error);
-    }
-
+    dispatch(createUser(newUser));
     setUsername("");
     setEmail("");
     setPassword("");
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
   }
 
   const { openModal } = useUserContext();
@@ -68,7 +65,7 @@ const Form = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         /> */}
-        <Button disabled={isLoading}>Create new user</Button>
+        <Button onClick={createNewUser}>Create new user</Button>
         {/* <button onClick={createNewUser}>Create new user</button> */}
       </form>
       {openModal && <Modal />}

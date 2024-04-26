@@ -4,14 +4,12 @@ import { useState } from "react";
 import { useUserContext } from "../context/UserContext";
 import Button from "./Button";
 import Input from "./Input";
-import { useUpdateUserMutation } from "../Slices/UserSlice/usersSlice";
 
 const Modal = () => {
   const { setOpenModal, updateValue } = useUserContext();
   const [passwordView, setPasswordView] = useState(false);
 
-  const [updateUser, { isLoading: updateIsLoading }] = useUpdateUserMutation();
-
+  const dispatch = useDispatch();
   const [newUpdateUser, setNewUpdateUser] = useState({
     name: updateValue.name,
     email: updateValue.email,
@@ -19,37 +17,23 @@ const Modal = () => {
     id: updateValue.id,
   });
 
-  // const newUser={
-  //   name:newUpdateUser.name,
-  //   email:newUpdateUser.email,
-  //   password:newUpdateUser.password,
-  //   id:newUpdateUser
-  // }
-
-  const updateUserFunc = async () => {
-    try {
-      await updateUser({
+  function updateUserFunc() {
+    dispatch(
+      updateUser({
         name: newUpdateUser.name,
         email: newUpdateUser.email,
         password: newUpdateUser.password,
         id: newUpdateUser.id,
-      }).unwrap();
-      setOpenModal(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      })
+    );
+    setOpenModal(false);
+  }
 
   return (
     <div className="modal">
       <div className="modal-container">
         <div className="modal-header">
-          <Button
-            disabled={updateIsLoading}
-            onClick={() => setOpenModal(false)}
-          >
-            X
-          </Button>
+          <Button onClick={() => setOpenModal(false)}>X</Button>
         </div>
         <div className="modal-context">
           {/* <input

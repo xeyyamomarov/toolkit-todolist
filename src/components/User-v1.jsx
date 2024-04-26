@@ -1,18 +1,14 @@
+import { useDispatch } from "react-redux";
 // import { deleteUser } from "../Slices/UserSlice/usersSlice";
 import { useUserContext } from "../context/UserContext";
 import Button from "./Button";
 import { useDeleteUserMutation } from "../Slices/UserSlice/usersSlice";
 
 const User = ({ user }) => {
-  const [deleteUser, { isLoading: deleteisLoading }] = useDeleteUserMutation();
+  const dispatch = useDispatch();
 
   function deleteUserFunc(user) {
-    // dispatch(deleteUser(user));
-    try {
-      deleteUser(user).unwrap();
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(deleteUser(user));
   }
 
   const { setOpenModal, setUpdateValue } = useUserContext();
@@ -22,6 +18,7 @@ const User = ({ user }) => {
     setOpenModal(true);
   }
 
+  console.log(user, "user");
   return (
     <div className="user-context">
       <div>
@@ -29,12 +26,7 @@ const User = ({ user }) => {
         <p> Email: {user.email}</p>
       </div>
       <div className="buttons">
-        <Button
-          disabled={deleteisLoading}
-          onClick={() => deleteUserFunc(user.id)}
-        >
-          Delete
-        </Button>
+        <Button onClick={() => deleteUserFunc(user.id)}>Delete</Button>
         <Button onClick={openUpdateModal}>Update</Button>
         {/* <button onClick={() => deleteUserFunc(user.id)}>Delete</button>
         <button

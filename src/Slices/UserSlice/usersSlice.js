@@ -1,75 +1,45 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+// Need to use the React-specific entry point to import createApi
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const initialState = {
-  users: [],
-  loading: false,
-  error: "",
-};
-
-export const getUser = createAsyncThunk("getUser", async () => {
-  const { data } = await axios.get("http://localhost:3003/users");
-  return data;
-});
-
-export const createUser = createAsyncThunk("createUser", async (newUser) => {
-  const { data } = await axios.post("http://localhost:3003/users", newUser);
-  return data;
-});
-
-export const deleteUser = createAsyncThunk("deleteUser", async (id) => {
-  const { data } = await axios.delete(`http://localhost:3003/users/${id}`);
-  return data;
-});
-
-export const updateUser = createAsyncThunk(
-  "updateUser",
-  async ({ name, email, password, id }) => {
-    const { data } = await axios.patch(`http://localhost:3003/users/${id}`, {
-      name,
-      email,
-      password,
-    });
-    console.log(name, "new");
-    console.log(email, "email");
-    return data;
-  }
-);
-
-export const usersSlice = createSlice({
-  name: "users",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(getUser.pending, (state) => {
-      state.loading = true;
+// Define a service using a base URL and expected endpoints
+export const userApi = createApi({
+  reducerPath: "userApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003/" }),
+  tagTypes: ["user"],
+  endpoints: (builder) => ({
+    getUser: builder.query({
+      query: () => "users",
+      providesTags: ["user"],
     }),
-      builder.addCase(getUser.fulfilled, (state, action) => {
-        state.users = action.payload;
-        state.loading = false;
-      });
-    builder.addCase(getUser.rejected, (state) => {
-      state.loading = false;
-      state.error = "Error retrieving users";
-    });
-
-    builder.addCase(createUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.users = [...state.users, action.payload];
-    });
-    builder.addCase(createUser.rejected, (state) => {
-      state.error = "Error creating user";
-    });
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.users = state.users.filter((user) => user.id !== action.payload.id);
-    });
-    builder.addCase(updateUser.fulfilled, (state, action) => {
-      state.users = state.users.map((user) =>
-        user.id === action.payload.id ? action.payload : user
-      );
-    });
-  },
+    createNewUser: builder.mutation({
+      query: (newUser) => ({
+        url: "users",
+        method: "POST",
+        body: newUser,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    updateUser: builder.mutation({
+      query: ({ id, ...patch }) => ({
+        url: `users/${id}`,
+        method: "PATCH",
+        body: patch,
+      }),
+      invalidatesTags: ["user"],
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["user"],
+    }),
+  }),
 });
 
-export default usersSlice.reducer;
+export const {
+  useGetUserQuery,
+  useCreateNewUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} = userApi;
