@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.modal {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal .modal-header {
+  display: flex;
+  justify-content: flex-end;
+}
+.modal .modal-container {
+  background-color: white;
+  padding: 10px 16px;
+  border-radius: 16px;
+}
+.modal .modal-context {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.modal .modal-context input {
+  width: 400px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+}
+.modal .modal-context input:focus {
+  outline: none;
+}
+.modal .modal-context button {
+  width: 100%;
+  padding: 8px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+
+button {
+  cursor: pointer;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.form input {
+  width: 50%;
+  margin: 10px 0;
+  padding: 10px;
+}
+.form button {
+  width: 50%;
+  padding: 10px;
+}
+ .password-input{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+ .password-input span{
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.user-context {
+  border: 1px solid red;
+  margin: 5px 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user-context .buttons button {
+  padding: 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: blue;
+  color: white;
+}

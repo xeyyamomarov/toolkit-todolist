@@ -1,0 +1,21 @@
+{
+  "users": [
+    {
+      "id": "de7c2f9c-bb1c-4692-866d-1b60bc77d5e3",
+      "name": "gsdgsdg111",
+      "email": "dsgdsg111",
+      "password": "1112"
+    },
+    {
+      "id": "b48e4f64-4eb2-4d5a-9c9b-2539b46df70b",
+      "name": "gsdfg",
+      "email": "gdfgdf"
+    },
+    {
+      "id": "4d5826a9-dc3e-4f56-82cc-e5c1cf07a42e",
+      "name": "gdf",
+      "email": "dfgdfd",
+      "password": "dsg1111"
+    }
+  ]
+}
